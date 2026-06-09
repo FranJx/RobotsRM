@@ -1050,23 +1050,6 @@
       </div>
     </a>
 
-    <!-- Innovación -->
-    <a class="cat-card" onclick="openDetail('innovacion')">
-      <div class="cat-card-img-wrapper">
-        <img class="cat-card-img" src="https://images.unsplash.com/photo-1507668077129-56e32842fceb?q=80&w=600&auto=format&fit=crop" alt="Innovación">
-      </div>
-      <div class="cat-card-body">
-        <div class="cat-title">Innovación</div>
-        <p class="cat-desc">Proyectos tecnológicos innovadores: IoT, IA, impresión 3D, automatización, domótica y STEM.</p>
-        <div class="cat-tags">
-          <span class="tag tag-sub">Abierto</span>
-          <span class="tag tag-content">IA</span>
-          <span class="tag tag-content">IoT</span>
-          <span class="tag tag-content">3D</span>
-        </div>
-        <div class="cat-arrow">EXPLORAR →</div>
-      </div>
-    </a>
 
   </div>
 </section>
@@ -1251,7 +1234,6 @@
           <option>Mini Sumo RC</option>
           <option>Dragster</option>
           <option>Puck Collector</option>
-          <option>Innovación</option>
         </select>
       </div>
       <div class="form-field">
@@ -1435,21 +1417,7 @@ const cats = {
       { name: '⬇ Manual de armado', file: 'README.md' }
     ]
   },
-  innovacion: {
-    icon: '💡', title: 'Innovación',
-    folder: 'robots/innovacion',
-    image: 'https://images.unsplash.com/photo-1507668077129-56e32842fceb?q=80&w=800&auto=format&fit=crop',
-    desc: 'Espacio abierto para proyectos tecnológicos que van más allá de la competencia: IoT, IA, automatización, domótica y educación STEM.',
-    tags: ['Abierto', 'IA', 'IoT', '3D', 'STEM'],
-    subs: ['Proyectos IoT', 'Proyectos IA', 'Automatización y Domótica'],
-    content: ['Proyectos IoT con MQTT y ESP32', 'Modelos de Inteligencia Artificial embebida', 'Impresión 3D aplicada', 'Automatización de procesos', 'Domótica educativa', 'Proyectos STEM para aula'],
-    downloads: [
-      { name: '⬇ Templates de proyectos', file: 'README.md' },
-      { name: '⬇ Guía IoT ESP32', file: 'README.md' },
-      { name: '⬇ Ficha de presentación STEM', file: 'README.md' },
-      { name: '⬇ Rúbricas de evaluación', file: 'README.md' }
-    ]
-  }
+
 };
 
 function openDetail(id) {

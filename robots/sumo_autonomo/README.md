@@ -1,15 +1,6 @@
 # ⚡ ¡Has llegado muy pronto! ⚡
 
-```
-     _..--""````""--.._
-   .'  ,-.   /\   ,-.  '.
-  /   (   ) /  \ (   )   \
- |     '-' /____\ '-'     |
-  \                      /
-   '.                  .'
-     `'-..__    __..-'`
-            ````
-```
+![Próximamente](../../assets/images/coming_soon.png)
 
 ### 🛠️ Los archivos para la categoría **Sumo Autónomo 🥋** aún no se han cargado :/
 
