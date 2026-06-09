@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RobotLab Misiones</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0A0A0F;
+    --surface: #13131C;
+    --card: #1A1A26;
+    --border: #2A2A3E;
+    --accent: #FF6B1A;
+    --accent2: #1E90FF;
+    --text: #F0F0F8;
+    --muted: #7A7A9A;
+    --green: #00E5A0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(10,10,15,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: 1rem;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    padding: 6rem 2rem 4rem;
+  }
+
+  /* Circuit board SVG background */
+  .circuit-bg {
+    position: absolute;
+    inset: 0;
+    opacity: 0.07;
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .hero-eyebrow::before,
+  .hero-eyebrow::after {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  h1 {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+
+  h1 span { color: var(--accent); }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--muted);
+    font-weight: 300;
+    max-width: 520px;
+    line-height: 1.6;
+    margin-bottom: 3rem;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .btn {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.75rem 2rem;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+    display: inline-block;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #000;
+    border: 2px solid var(--accent);
+  }
+
+  .btn-primary:hover {
+    background: transparent;
+    color: var(--accent);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text);
+    border: 2px solid var(--border);
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--accent2);
+    color: var(--accent2);
+  }
+
+  /* Floating robots in hero */
+  .hero-robots {
+    margin-top: 4rem;
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .robot-stat {
+    text-align: center;
+  }
+
+  .robot-stat .num {
+    font-family: 'Orbitron', monospace;
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--accent);
+    display: block;
+  }
+
+  .robot-stat .label {
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+  }
+
+  .section-header {
+    margin-bottom: 3rem;
+    display: flex;
+    align-items: flex-end;
+    gap: 1.5rem;
+  }
+
+  .section-label {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    color: var(--accent);
+    text-transform: uppercase;
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+    opacity: 0.7;
+  }
+
+  h2 {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  h2 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .section-divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, var(--accent), transparent);
+    margin: 0.75rem 0 0;
+  }
+
+  /* ── CATEGORY GRID ── */
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  /* Scanner border animation — la firma */
+  .cat-card {
+    background: var(--card);
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: background 0.25s;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .cat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 2px;
+    background: linear-gradient(to right, transparent, var(--accent), transparent);
+    transition: left 0s;
+  }
+
+  .cat-card:hover { background: #1E1E2E; }
+
+  .cat-card:hover::before {
+    left: 100%;
+    transition: left 0.6s ease-in-out;
+  }
+
+  .cat-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .cat-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  .cat-desc {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+  }
+
+  .cat-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .tag {
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.6rem;
+    border-radius: 1px;
+    font-weight: 500;
+  }
+
+  .tag-sub {
+    background: rgba(30,144,255,0.12);
+    color: var(--accent2);
+    border: 1px solid rgba(30,144,255,0.25);
+  }
+
+  .tag-content {
+    background: rgba(255,107,26,0.1);
+    color: var(--accent);
+    border: 1px solid rgba(255,107,26,0.2);
+  }
+
+  .cat-arrow {
+    font-size: 0.7rem;
+    color: var(--accent);
+    font-family: 'Orbitron', monospace;
+    letter-spacing: 0.1em;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .cat-card:hover .cat-arrow { opacity: 1; }
+
+  /* ── RESOURCES GRID ── */
+  .res-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .res-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: pointer;
+  }
+
+  .res-card:hover {
+    border-color: var(--accent2);
+    transform: translateY(-3px);
+  }
+
+  .res-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+
+  .res-name {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+
+  .res-desc { font-size: 0.75rem; color: var(--muted); line-height: 1.5; }
+
+  /* ── MULTIMEDIA ── */
+  .media-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 1rem;
+  }
+
+  .media-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .media-card.featured { grid-row: span 2; }
+
+  .media-thumb {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: linear-gradient(135deg, var(--surface), #0D1A2E);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+  }
+
+  .media-card.featured .media-thumb { aspect-ratio: unset; min-height: 320px; }
+
+  .media-info { padding: 1rem; }
+
+  .media-type {
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    font-family: 'Orbitron', monospace;
+    margin-bottom: 0.4rem;
+  }
+
+  .media-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.4;
+  }
+
+  /* ── COMMUNITY ── */
+  .community-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .comm-card {
+    background: var(--card);
+    padding: 2rem 1.5rem;
+    text-align: center;
+    transition: background 0.2s;
+  }
+
+  .comm-card:hover { background: #1E1E2E; }
+
+  .comm-icon { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+
+  .comm-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .comm-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.6; }
+
+  /* ── CONTACT ── */
+  .contact-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .contact-info h3 {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+
+  .contact-info p {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  .social-links { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+  .social-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.78rem;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+
+  .social-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .form-field label {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-family: 'Orbitron', monospace;
+  }
+
+  .form-field input,
+  .form-field textarea,
+  .form-field select {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    color: var(--text);
+    padding: 0.75rem 1rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.88rem;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+
+  .form-field input:focus,
+  .form-field textarea:focus,
+  .form-field select:focus { border-color: var(--accent); }
+
+  .form-field textarea { resize: vertical; min-height: 120px; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 2.5rem 2rem;
+    text-align: center;
+  }
+
+  .footer-logo {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-sub {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+
+  .footer-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--accent); }
+
+  .footer-copy { font-size: 0.7rem; color: #444460; }
+
+  /* ── FULL-PAGE CATEGORY DETAIL ── */
+  #detail-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(10,10,15,0.97);
+    backdrop-filter: blur(16px);
+    overflow-y: auto;
+    display: none;
+    padding: 0;
+  }
+
+  #detail-overlay.active { display: block; }
+
+  .detail-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 5rem 2rem 4rem;
+  }
+
+  .detail-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    cursor: pointer;
+    margin-bottom: 3rem;
+    transition: color 0.2s;
+    text-transform: uppercase;
+    background: none;
+    border: none;
+  }
+
+  .detail-back:hover { color: var(--accent); }
+
+  .detail-header { margin-bottom: 3rem; }
+
+  .detail-icon { font-size: 3.5rem; display: block; margin-bottom: 1rem; }
+
+  .detail-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+  }
+
+  .detail-desc {
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    max-width: 600px;
+    margin-bottom: 1.5rem;
+  }
+
+  .detail-sections {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .detail-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 1.5rem;
+  }
+
+  .detail-box h4 {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 1rem;
+  }
+
+  .detail-box ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .detail-box li {
+    font-size: 0.82rem;
+    color: var(--muted);
+    padding-left: 1rem;
+    position: relative;
+    line-height: 1.4;
+  }
+
+  .detail-box li::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+
+  .detail-downloads {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .cat-grid { grid-template-columns: 1fr; gap: 1px; }
+    .media-grid { grid-template-columns: 1fr; }
+    .media-card.featured { grid-row: auto; }
+    .community-grid { grid-template-columns: 1fr 1fr; }
+    .contact-row { grid-template-columns: 1fr; gap: 2rem; }
+    .detail-sections { grid-template-columns: 1fr; }
+    .res-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Pulse dot */
+  .pulse-dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    margin-right: 0.5rem;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.5); }
+  }
+
+  /* Glow on accent */
+  .glow { text-shadow: 0 0 30px rgba(255,107,26,0.4); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">⚡ RobotLab Misiones</div>
+  <ul class="nav-links">
+    <li><a href="#categorias">Categorías</a></li>
+    <li><a href="#biblioteca">Recursos</a></li>
+    <li><a href="#multimedia">Multimedia</a></li>
+    <li><a href="#comunidad">Comunidad</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="inicio">
+  <!-- Circuit pattern SVG bg -->
+  <svg class="circuit-bg" viewBox="0 0 1400 800" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+    <!-- Horizontal lines -->
+    <line x1="0" y1="100" x2="1400" y2="100" stroke="#FF6B1A" stroke-width="1"/>
+    <line x1="0" y1="300" x2="1400" y2="300" stroke="#1E90FF" stroke-width="1"/>
+    <line x1="0" y1="500" x2="1400" y2="500" stroke="#FF6B1A" stroke-width="1"/>
+    <line x1="0" y1="700" x2="1400" y2="700" stroke="#1E90FF" stroke-width="1"/>
+    <!-- Vertical lines -->
+    <line x1="200" y1="0" x2="200" y2="800" stroke="#FF6B1A" stroke-width="1"/>
+    <line x1="500" y1="0" x2="500" y2="800" stroke="#1E90FF" stroke-width="1"/>
+    <line x1="800" y1="0" x2="800" y2="800" stroke="#FF6B1A" stroke-width="1"/>
+    <line x1="1100" y1="0" x2="1100" y2="800" stroke="#1E90FF" stroke-width="1"/>
+    <!-- Nodes -->
+    <circle cx="200" cy="100" r="4" fill="#FF6B1A"/>
+    <circle cx="500" cy="300" r="4" fill="#1E90FF"/>
+    <circle cx="800" cy="100" r="4" fill="#FF6B1A"/>
+    <circle cx="1100" cy="300" r="4" fill="#1E90FF"/>
+    <circle cx="200" cy="500" r="4" fill="#1E90FF"/>
+    <circle cx="500" cy="700" r="4" fill="#FF6B1A"/>
+    <circle cx="800" cy="500" r="4" fill="#1E90FF"/>
+    <circle cx="1100" cy="700" r="4" fill="#FF6B1A"/>
+    <!-- Pads -->
+    <rect x="194" y="94" width="12" height="12" rx="1" fill="none" stroke="#FF6B1A" stroke-width="1"/>
+    <rect x="494" y="294" width="12" height="12" rx="1" fill="none" stroke="#1E90FF" stroke-width="1"/>
+    <rect x="794" y="494" width="12" height="12" rx="1" fill="none" stroke="#FF6B1A" stroke-width="1"/>
+    <rect x="1094" y="694" width="12" height="12" rx="1" fill="none" stroke="#1E90FF" stroke-width="1"/>
+  </svg>
+
+  <div class="hero-eyebrow">Red Maker Misiones</div>
+  <h1>Robot<span class="glow">Lab</span><br>Misiones</h1>
+  <p class="hero-sub">Diseño, desarrollo e innovación en robótica educativa y competitiva. Proyectos abiertos para construir, aprender y competir.</p>
+
+  <div class="hero-actions">
+    <a href="#categorias" class="btn btn-primary">Explorar categorías</a>
+    <a href="#biblioteca" class="btn btn-ghost">Descargar recursos</a>
+  </div>
+
+  <div class="hero-robots">
+    <div class="robot-stat"><span class="num">10</span><span class="label">Categorías</span></div>
+    <div class="robot-stat"><span class="num">23</span><span class="label">Nodos</span></div>
+    <div class="robot-stat"><span class="num">75+</span><span class="label">Sedes</span></div>
+    <div class="robot-stat"><span class="num">3</span><span class="label">Fechas Copa 2026</span></div>
+  </div>
+</div>
+
+<!-- CATEGORÍAS -->
+<section id="categorias">
+  <div class="section-header reveal">
+    <div class="section-label">Competencias</div>
+    <div>
+      <h2>Categorías de <em>Competencia</em></h2>
+      <div class="section-divider"></div>
+    </div>
+  </div>
+
+  <div class="cat-grid reveal">
+
+    <!-- Fútbol Robótico -->
+    <a class="cat-card" onclick="openDetail('futbol')">
+      <span class="cat-icon">⚽</span>
+      <div class="cat-title">Fútbol Robótico</div>
+      <p class="cat-desc">Dos equipos de dos robots radiocontrolados compiten para anotar goles dentro del tiempo reglamentario.</p>
+      <div class="cat-tags">
+        <span class="tag tag-sub">Amateur ≤16</span>
+        <span class="tag tag-sub">Pro</span>
+        <span class="tag tag-content">RC</span>
+        <span class="tag tag-content">Chasis 3D</span>
+      </div>
+      <div class="cat-arrow">EXPLORAR →</div>
+    </a>
+
+    <!-- Laberinto -->
+    <a class="cat-card" onclick="openDetail('laberinto')">
+      <span class="cat-icon">🧩</span>
+      <div class="cat-title">Laberinto</div>
+      <p class="cat-desc">Robots autónomos encuentran la salida de un laberinto en el menor tiempo posible.</p>
+      <div class="cat-tags">
+        <span class="tag tag-sub">Amateur</span>
+        <span class="tag tag-sub">Pro</span>
+        <span class="tag tag-content">Autónomo</span>
+        <span class="tag tag-content">Arduino</span>
+      </div>
+      <div class="cat-arrow">EXPLORAR →</div>
+    </a>
+
+    <!-- Carreras -->
+    <a class="cat-card" onclick="openDetail('carreras')">
+      <span class="cat-icon">🏎️</span>
+      <div class="cat-title">Carreras / Velocista</div>
+      <p class="cat-desc">Competencia de velocidad en circuitos predefinidos. Optimización de peso, tracción y estabilidad.</p>
+      <div class="cat-tags">
+        <span class="tag tag-sub">Amateur</span>
+        <span class="tag tag-sub">Pro</span>
+        <span class="tag tag-content">Velocidad</span>
+        <span class="tag tag-content">Electrónica</span>
+      </div>
+      <div class="cat-arrow">EXPLORAR →</div>
+    </a>
+
+    <!-- Sumo -->
+    <a class="cat-card" onclick="openDetail('sumo')">
+      <span class="cat-icon">🥋</span>
+      <div class="cat-title">Sumo Autónomo</div>
+      <p class="cat-desc">Combate autónomo entre robots de hasta 20×20 cm y 3 kg. Estrategia de ataque y defensa.</p>
+      <div class="cat-tags">
+        <span class="tag tag-sub">Amateur</span>
+        <span class="tag tag-sub">Pro</span>
+        <span class="tag tag-content">Autónomo</span>
+        <span class="tag tag-content">Sensores</span>
+      </div>
+      <div class="cat-arrow">EXPLORAR →</div>
+    </a>
+
+    <!-- Sumo RC -->
+    <a class="cat-card" onclick="openDetail('sumorc')">
+      <span class="cat-icon">🎮</span>
+      <div class="cat-title">Sumo RC</div>
+      <p class="cat-desc">Versión radiocontrolada del Sumo. Sistemas RC, diseño mecánico y configuración de controles.</p>
+      <div class="cat-tags">
+        <span class="tag tag-sub">Amateur</span>
+        <span class="tag tag-sub">Pro</span>
+        <span class="tag tag-content">RC</span>
+        <span class="tag tag-content">Mecánica</span>
+      </div>
+      <div class="cat-arrow">EXPLORAR →</div>
+    </a>
+
+    <!-- Mini Sumo -->
+    <a class="cat-card" onclick="openDetail('minisumo')">
+      <span class="cat-icon">🤖</span>
+      <div class="cat-title">Mini Sumo Autónomo</div>
+      <p class="cat-desc">Combate autónomo entre robots de hasta 10×10 cm y 500 g. Formato educativo y competitivo.</p>
+      <div class="cat-tags">
+        <span class="tag tag-sub">Educativo</span>
+        <span class="tag tag-sub">Pro</span>
+        <span class="tag tag-content">IR</span>
+        <span class="tag tag-content">Borde</span>
+      </div>
+      <div class="cat-arrow">EXPLORAR →</div>
+    </a>
+
+    <!-- Mini Sumo RC -->
+    <a class="cat-card" onclick="openDetail('minisumorc')">
+      <span class="cat-icon">🎯</span>
+      <div class="cat-title">Mini Sumo RC</div>
+      <p class="cat-desc">Versión radiocontrolada del Mini Sumo. Chasis compactos, Bluetooth y diseños imprimibles.</p>
+      <div class="cat-tags">
+        <span class="tag tag-sub">Amateur</span>
+        <span class="tag tag-sub">Pro</span>
+        <span class="tag tag-content">Bluetooth</span>
+        <span class="tag tag-content">3D</span>
+      </div>
+      <div class="cat-arrow">EXPLORAR →</div>
+    </a>
+
+    <!-- Dragster -->
+    <a class="cat-card" onclick="openDetail('dragster')">
+      <span class="cat-icon">🚀</span>
+      <div class="cat-title">Dragster</div>
+      <p class="cat-desc">Robots autónomos para máxima velocidad en línea recta. Aerodinámica, motores de alto rendimiento.</p>
+      <div class="cat-tags">
+        <span class="tag tag-sub">Nuevo 2026</span>
+        <span class="tag tag-content">Aerodinámica</span>
+        <span class="tag tag-content">Motores</span>
+      </div>
+      <div class="cat-arrow">EXPLORAR →</div>
+    </a>
+
+    <!-- Puck Collector -->
+    <a class="cat-card" onclick="openDetail('puck')">
+      <span class="cat-icon">🏒</span>
+      <div class="cat-title">Puck Collector</div>
+      <p class="cat-desc">Robots autónomos que recolectan y transportan pucks hacia su zona de puntuación.</p>
+      <div class="cat-tags">
+        <span class="tag tag-sub">Nuevo 2026</span>
+        <span class="tag tag-content">Color</span>
+        <span class="tag tag-content">Autónomo</span>
+      </div>
+      <div class="cat-arrow">EXPLORAR →</div>
+    </a>
+
+    <!-- Innovación -->
+    <a class="cat-card" onclick="openDetail('innovacion')">
+      <span class="cat-icon">💡</span>
+      <div class="cat-title">Innovación</div>
+      <p class="cat-desc">Proyectos tecnológicos innovadores: IoT, IA, impresión 3D, automatización, domótica y STEM.</p>
+      <div class="cat-tags">
+        <span class="tag tag-sub">Abierto</span>
+        <span class="tag tag-content">IA</span>
+        <span class="tag tag-content">IoT</span>
+        <span class="tag tag-content">3D</span>
+      </div>
+      <div class="cat-arrow">EXPLORAR →</div>
+    </a>
+
+  </div>
+</section>
+
+<!-- BIBLIOTECA -->
+<section id="biblioteca" style="background: var(--surface); max-width: 100%; padding: 5rem 0;">
+  <div style="max-width:1300px; margin:0 auto; padding: 0 2rem;">
+    <div class="section-header reveal">
+      <div class="section-label">Recursos</div>
+      <div>
+        <h2>Biblioteca de <em>Recursos</em></h2>
+        <div class="section-divider"></div>
+      </div>
+    </div>
+    <div class="res-grid reveal">
+      <div class="res-card">
+        <div class="res-icon">📐</div>
+        <div class="res-name">Diseños STL</div>
+        <div class="res-desc">Archivos listos para imprimir en 3D, organizados por categoría y nivel.</div>
+      </div>
+      <div class="res-card">
+        <div class="res-icon">🔩</div>
+        <div class="res-name">Archivos STEP</div>
+        <div class="res-desc">Modelos CAD editables para personalizar y adaptar diseños mecánicos.</div>
+      </div>
+      <div class="res-card">
+        <div class="res-icon">💻</div>
+        <div class="res-name">Código Arduino</div>
+        <div class="res-desc">Sketches comentados y librerías para cada categoría de competencia.</div>
+      </div>
+      <div class="res-card">
+        <div class="res-icon">⚡</div>
+        <div class="res-name">Diagramas PCB</div>
+        <div class="res-desc">Esquemáticos y layouts electrónicos para todos los niveles de complejidad.</div>
+      </div>
+      <div class="res-card">
+        <div class="res-icon">📋</div>
+        <div class="res-name">Reglamentos</div>
+        <div class="res-desc">Documentación oficial Copa Robótica Misiones 2026 por categoría.</div>
+      </div>
+      <div class="res-card">
+        <div class="res-icon">📘</div>
+        <div class="res-name">Manuales</div>
+        <div class="res-desc">Guías de construcción paso a paso para principiantes y avanzados.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MULTIMEDIA -->
+<section id="multimedia">
+  <div class="section-header reveal">
+    <div class="section-label">Multimedia</div>
+    <div>
+      <h2>Videos y <em>Streaming</em></h2>
+      <div class="section-divider"></div>
+    </div>
+  </div>
+  <div class="media-grid reveal">
+    <div class="media-card featured">
+      <div class="media-thumb">🤖</div>
+      <div class="media-info">
+        <div class="media-type"><span class="pulse-dot"></span>Competencia · Copa Robótica 2026</div>
+        <div class="media-title">Final Sumo Autónomo — Parque de las Fiestas, Posadas</div>
+      </div>
+    </div>
+    <div class="media-card">
+      <div class="media-thumb" style="font-size:2rem;">🏎️</div>
+      <div class="media-info">
+        <div class="media-type">Tutorial</div>
+        <div class="media-title">Construye tu primer velocista</div>
+      </div>
+    </div>
+    <div class="media-card">
+      <div class="media-thumb" style="font-size:2rem;">⚽</div>
+      <div class="media-info">
+        <div class="media-type">Demo</div>
+        <div class="media-title">Fútbol robótico — estrategias RC</div>
+      </div>
+    </div>
+    <div class="media-card">
+      <div class="media-thumb" style="font-size:2rem;">💡</div>
+      <div class="media-info">
+        <div class="media-type">Clase Twitch</div>
+        <div class="media-title">Sensores, encoders y protocolos inalámbricos</div>
+      </div>
+    </div>
+    <div class="media-card">
+      <div class="media-thumb" style="font-size:2rem;">🧩</div>
+      <div class="media-info">
+        <div class="media-type">Tutorial</div>
+        <div class="media-title">Algoritmos de resolución de laberintos</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMUNIDAD -->
+<section id="comunidad" style="background: var(--surface); max-width: 100%; padding: 5rem 0;">
+  <div style="max-width:1300px; margin:0 auto; padding: 0 2rem;">
+    <div class="section-header reveal">
+      <div class="section-label">Red</div>
+      <div>
+        <h2>Comunidad <em>Maker</em></h2>
+        <div class="section-divider"></div>
+      </div>
+    </div>
+    <div class="community-grid reveal">
+      <div class="comm-card">
+        <span class="comm-icon">📅</span>
+        <div class="comm-title">Eventos</div>
+        <div class="comm-desc">Copa Robótica Misiones 2026 — 3 fechas en Posadas, Eldorado y Ruiz de Montoya.</div>
+      </div>
+      <div class="comm-card">
+        <span class="comm-icon">🛠️</span>
+        <div class="comm-title">Talleres</div>
+        <div class="comm-desc">Capacitaciones presenciales y virtuales en los 23 nodos de la Red Maker Misiones.</div>
+      </div>
+      <div class="comm-card">
+        <span class="comm-icon">🎓</span>
+        <div class="comm-title">Capacitaciones</div>
+        <div class="comm-desc">Plan de entrenamiento en robótica competitiva: 116 horas, 46 clases, 5 categorías.</div>
+      </div>
+      <div class="comm-card">
+        <span class="comm-icon">🤝</span>
+        <div class="comm-title">Proyectos Colaborativos</div>
+        <div class="comm-desc">Iniciativas abiertas con nodos locales, escuelas y la Cámara de Representantes de Misiones.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="section-header reveal">
+    <div class="section-label">Contacto</div>
+    <div>
+      <h2>Conectá con <em>RobotLab</em></h2>
+      <div class="section-divider"></div>
+    </div>
+  </div>
+  <div class="contact-row reveal">
+    <div class="contact-info">
+      <h3>Red Maker Misiones</h3>
+      <p>Coordinación de robótica educativa y competitiva en Misiones, Argentina. Parte de la iniciativa de la Cámara de Representantes de la Provincia.</p>
+      <div class="social-links">
+        <a href="#" class="social-btn">▶ YouTube</a>
+        <a href="#" class="social-btn">📺 Twitch</a>
+        <a href="#" class="social-btn">📘 Facebook</a>
+        <a href="#" class="social-btn">📸 Instagram</a>
+      </div>
+    </div>
+    <div class="contact-form">
+      <div class="form-field">
+        <label>Nombre</label>
+        <input type="text" placeholder="Tu nombre completo">
+      </div>
+      <div class="form-field">
+        <label>Correo electrónico</label>
+        <input type="email" placeholder="tu@email.com">
+      </div>
+      <div class="form-field">
+        <label>Categoría de interés</label>
+        <select>
+          <option value="">Seleccioná una categoría</option>
+          <option>Fútbol Robótico</option>
+          <option>Laberinto</option>
+          <option>Carreras / Velocista</option>
+          <option>Sumo Autónomo</option>
+          <option>Sumo RC</option>
+          <option>Mini Sumo</option>
+          <option>Mini Sumo RC</option>
+          <option>Dragster</option>
+          <option>Puck Collector</option>
+          <option>Innovación</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label>Mensaje</label>
+        <textarea placeholder="¿En qué podemos ayudarte?"></textarea>
+      </div>
+      <button class="btn btn-primary" style="width:fit-content;" onclick="alert('Mensaje enviado — pronto nos contactamos.')">Enviar mensaje</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">⚡ RobotLab Misiones</div>
+  <div class="footer-sub">Red Maker Misiones · Cámara de Representantes de Misiones</div>
+  <div class="footer-links">
+    <a href="#inicio">Inicio</a>
+    <a href="#categorias">Categorías</a>
+    <a href="#biblioteca">Biblioteca</a>
+    <a href="#multimedia">Multimedia</a>
+    <a href="#comunidad">Comunidad</a>
+    <a href="#contacto">Contacto</a>
+  </div>
+  <div class="footer-copy">© 2026 RobotLab Misiones — Todos los diseños bajo licencia abierta CC BY-SA 4.0</div>
+</footer>
+
+<!-- DETAIL OVERLAY -->
+<div id="detail-overlay">
+  <div class="detail-inner">
+    <button class="detail-back" onclick="closeDetail()">← Volver a categorías</button>
+    <div class="detail-header">
+      <span class="detail-icon" id="d-icon"></span>
+      <div class="detail-title" id="d-title"></div>
+      <p class="detail-desc" id="d-desc"></p>
+      <div class="cat-tags" id="d-tags"></div>
+    </div>
+    <div class="detail-sections" id="d-sections"></div>
+    <div class="detail-downloads" id="d-downloads"></div>
+  </div>
+</div>
+
+<script>
+// Category data
+const cats = {
+  futbol: {
+    icon: '⚽', title: 'Fútbol Robótico',
+    folder: 'robots/futbol',
+    desc: 'Dos equipos de dos robots radiocontrolados compiten para anotar la mayor cantidad de goles dentro del tiempo reglamentario.',
+    tags: ['Amateur ≤16', 'Pro', 'RC', 'Teleoperated'],
+    subs: ['Amateur (hasta 16 años)', 'Pro'],
+    content: ['Diseños de robots completos', 'Chasis 3D imprimibles', 'Sistemas de tracción diferencial', 'Integración receptor RC', 'Estrategias de juego y posición', 'Archivos STL descargables'],
+    downloads: [
+      { name: '⬇ Chasis Fútbol v2.stl', file: 'README.md' }, // Puedes cambiar 'README.md' por el nombre del archivo real cuando lo subas
+      { name: '⬇ Guía de construcción PDF', file: 'README.md' },
+      { name: '⬇ Reglamento Copa 2026', file: 'README.md' },
+      { name: '⬇ Código receptor RC', file: 'README.md' }
+    ]
+  },
+  laberinto: {
+    icon: '🧩', title: 'Laberinto',
+    folder: 'robots/laberinto',
+    desc: 'Robots autónomos capaces de encontrar la salida de un laberinto en el menor tiempo posible mediante sensores y algoritmos de navegación.',
+    tags: ['Amateur', 'Pro', 'Autónomo'],
+    subs: ['Amateur', 'Pro'],
+    content: ['Sensores ultrasónico HC-SR04', 'Sensores IR laterales', 'Algoritmo flood-fill', 'Algoritmo mano derecha/izquierda', 'Resolución por mapeo', 'Código Arduino comentado'],
+    downloads: [
+      { name: '⬇ Código Laberinto Arduino', file: 'README.md' },
+      { name: '⬇ Chasis STL', file: 'README.md' },
+      { name: '⬇ Reglamento oficial', file: 'README.md' },
+      { name: '⬇ Diagrama electrónico', file: 'README.md' }
+    ]
+  },
+  carreras: {
+    icon: '🏎️', title: 'Carreras / Velocista',
+    folder: 'robots/carreras',
+    desc: 'Competencia de velocidad en circuitos predefinidos. El objetivo es recorrer el trayecto en el menor tiempo posible con robots autónomos seguidores de línea.',
+    tags: ['Amateur', 'Pro', 'Velocidad'],
+    subs: ['Amateur', 'Pro'],
+    content: ['Robots velocistas seguidor de línea', 'Sensores QRE1113 array', 'Driver TB6612FNG', 'Optimización de peso y CG', 'Control PID para velocistas', 'Configuración electrónica avanzada'],
+    downloads: [
+      { name: '⬇ Código PID Velocista', file: 'README.md' },
+      { name: '⬇ Chasis velocista STL', file: 'README.md' },
+      { name: '⬇ Esquemático electrónico', file: 'README.md' },
+      { name: '⬇ Reglamento Copa 2026', file: 'README.md' }
+    ]
+  },
+  sumo: {
+    icon: '🥋', title: 'Sumo Autónomo',
+    folder: 'robots/sumo_autonomo',
+    desc: 'Combate autónomo entre robots de hasta 20×20 cm y 3 kg. Detección del oponente y del borde del dohyō sin intervención humana.',
+    tags: ['Amateur', 'Pro', 'Autónomo', '3kg'],
+    subs: ['Amateur', 'Pro'],
+    content: ['Sensores de detección VL53L0X', 'Sensores de borde IR', 'Estrategias de ataque y evasión', 'Diseños de palas frontales', 'Motores de alto torque', 'Montaje y balanceo'],
+    downloads: [
+      { name: '⬇ Código Sumo Autónomo', file: 'README.md' },
+      { name: '⬇ Chasis Sumo STL', file: 'README.md' },
+      { name: '⬇ Reglamento Sumo', file: 'README.md' },
+      { name: '⬇ Manual de construcción', file: 'README.md' }
+    ]
+  },
+  sumorc: {
+    icon: '🎮', title: 'Sumo RC',
+    folder: 'robots/sumo_rc',
+    desc: 'Versión radiocontrolada del Sumo clásico. El piloto controla el robot en tiempo real con un sistema RC convencional.',
+    tags: ['Amateur', 'Pro', 'RC'],
+    subs: ['Amateur', 'Pro'],
+    content: ['Sistemas RC 2.4GHz', 'Diseño mecánico robusto', 'Motores de potencia y transmisión', 'Configuración de mezclas de canales', 'Palas y bumpers intercambiables', 'Guía de binding RC'],
+    downloads: [
+      { name: '⬇ Chasis Sumo RC STL', file: 'README.md' },
+      { name: '⬇ Reglamento Sumo RC', file: 'README.md' },
+      { name: '⬇ Guía configuración RC', file: 'README.md' },
+      { name: '⬇ Diseño pala STEP', file: 'README.md' }
+    ]
+  },
+  minisumo: {
+    icon: '🤖', title: 'Mini Sumo Autónomo',
+    folder: 'robots/minisumo_autonomo',
+    desc: 'Combate autónomo entre robots de hasta 10×10 cm y 500 g. Disponible en formato educativo y competitivo.',
+    tags: ['Educativo', 'Pro', '500g', 'Arduino'],
+    subs: ['MiniSumo Educativo', 'MiniSumo Pro'],
+    content: ['Sensores IR de frente TCRT5000', 'Sensores de borde QRE1113', 'ESP32 C3 SuperMini', 'LiPo 701245P integrada', 'Algoritmos de ataque', 'Código base comentado'],
+    downloads: [
+      { name: '⬇ Código MiniSumo Arduino', file: 'README.md' },
+      { name: '⬇ Chasis 10x10 STL', file: 'README.md' },
+      { name: '⬇ Reglamento MiniSumo', file: 'README.md' },
+      { name: '⬇ Esquemático completo', file: 'README.md' }
+    ]
+  },
+  minisumorc: {
+    icon: '🎯', title: 'Mini Sumo RC',
+    folder: 'robots/minisumo_rc',
+    desc: 'Versión radiocontrolada del Mini Sumo. Chasis ultra-compactos controlados por Bluetooth o radio 2.4GHz.',
+    tags: ['Amateur', 'Pro', 'Bluetooth', '3D'],
+    subs: ['Amateur', 'Pro'],
+    content: ['Chasis compactos 10×10 cm', 'Control Bluetooth ESP32', 'App de control Android/iOS', 'Diseños 100% imprimibles', 'Driver de motor integrado', 'Batería LiPo plana'],
+    downloads: [
+      { name: '⬇ Chasis Mini RC STL', file: 'README.md' },
+      { name: '⬇ Código Bluetooth ESP32', file: 'README.md' },
+      { name: '⬇ Reglamento Mini Sumo RC', file: 'README.md' },
+      { name: '⬇ App APK control', file: 'README.md' }
+    ]
+  },
+  dragster: {
+    icon: '🚀', title: 'Dragster',
+    folder: 'robots/dragster',
+    desc: 'Robots autónomos diseñados para alcanzar la máxima velocidad en línea recta. Categoría nueva en Copa Robótica Misiones 2026.',
+    tags: ['Nuevo 2026', 'Autónomo', 'Alta velocidad'],
+    subs: ['Única categoría'],
+    content: ['Diseños aerodinámicos carenados', 'Motores brushless de alto RPM', 'ESC para arranque instantáneo', 'Sistemas de estabilidad giroscópica', 'Cronometraje por sensor IR', 'Guía de pista y medidas'],
+    downloads: [
+      { name: '⬇ Chasis Dragster STL', file: 'README.md' },
+      { name: '⬇ Reglamento Dragster 2026', file: 'README.md' },
+      { name: '⬇ Código de control', file: 'README.md' },
+      { name: '⬇ Guía de armado', file: 'README.md' }
+    ]
+  },
+  puck: {
+    icon: '🏒', title: 'Puck Collector',
+    folder: 'robots/puck_collector',
+    desc: 'Robots autónomos que detectan, recolectan y transportan pucks de colores hacia su zona de puntuación. Categoría nueva 2026.',
+    tags: ['Nuevo 2026', 'Autónomo', 'Color'],
+    subs: ['Única categoría'],
+    content: ['Sistema de recolección mecánica', 'Sensor de color TCS3200', 'Estrategias de búsqueda y barrido', 'Programación de secuencias autónomas', 'Diseño de cangilón recolector', 'Mapa de campo y puntuación'],
+    downloads: [
+      { name: '⬇ Chasis Puck Collector STL', file: 'README.md' },
+      { name: '⬇ Código detección color', file: 'README.md' },
+      { name: '⬇ Reglamento Puck Collector 2026', file: 'README.md' },
+      { name: '⬇ Manual de armado', file: 'README.md' }
+    ]
+  },
+  innovacion: {
+    icon: '💡', title: 'Innovación',
+    folder: 'robots/innovacion',
+    desc: 'Espacio abierto para proyectos tecnológicos que van más allá de la competencia: IoT, IA, automatización, domótica y educación STEM.',
+    tags: ['Abierto', 'IA', 'IoT', '3D', 'STEM'],
+    subs: ['Proyectos IoT', 'Proyectos IA', 'Automatización y Domótica'],
+    content: ['Proyectos IoT con MQTT y ESP32', 'Modelos de Inteligencia Artificial embebida', 'Impresión 3D aplicada', 'Automatización de procesos', 'Domótica educativa', 'Proyectos STEM para aula'],
+    downloads: [
+      { name: '⬇ Templates de proyectos', file: 'README.md' },
+      { name: '⬇ Guía IoT ESP32', file: 'README.md' },
+      { name: '⬇ Ficha de presentación STEM', file: 'README.md' },
+      { name: '⬇ Rúbricas de evaluación', file: 'README.md' }
+    ]
+  }
+};
+
+function openDetail(id) {
+  const c = cats[id];
+  if (!c) return;
+  document.getElementById('d-icon').textContent = c.icon;
+  document.getElementById('d-title').textContent = c.title;
+  document.getElementById('d-desc').textContent = c.desc;
+
+  const tagsEl = document.getElementById('d-tags');
+  tagsEl.innerHTML = c.tags.map(t => `<span class="tag tag-sub">${t}</span>`).join('');
+
+  const sections = document.getElementById('d-sections');
+  sections.innerHTML = `
+    <div class="detail-box">
+      <h4>Subcategorías</h4>
+      <ul>${c.subs.map(s => `<li>${s}</li>`).join('')}</ul>
+    </div>
+    <div class="detail-box">
+      <h4>Contenido disponible</h4>
+      <ul>${c.content.map(s => `<li>${s}</li>`).join('')}</ul>
+    </div>
+  `;
+
+  const dl = document.getElementById('d-downloads');
+  const githubBaseUrl = 'https://github.com/FranJx/RobotsRM';
+  const folderLink = `${githubBaseUrl}/tree/main/${c.folder}`;
+  
+  let html = `
+    <a href="${folderLink}" target="_blank" class="btn btn-primary" style="font-size:0.72rem; display:inline-flex; align-items:center; gap:0.5rem; text-decoration:none; margin-right:0.5rem;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="display:block;"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+      Ver Carpeta en GitHub
+    </a>
+  `;
+  
+  if (c.downloads && c.downloads.length > 0) {
+    html += c.downloads.map(d => {
+      const fileLink = `${githubBaseUrl}/blob/main/${c.folder}/${d.file}`;
+      return `<a href="${fileLink}" target="_blank" class="btn btn-ghost" style="font-size:0.7rem; text-decoration:none; display:inline-flex; align-items:center; gap:0.3rem; margin-right:0.5rem; margin-top:0.25rem;">${d.name}</a>`;
+    }).join('');
+  }
+  
+  dl.innerHTML = html;
+
+  const overlay = document.getElementById('detail-overlay');
+  overlay.classList.add('active');
+  overlay.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDetail() {
+  document.getElementById('detail-overlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
