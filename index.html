@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RobotLab Misiones</title>
+<title>Robots Red Maker</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -249,45 +249,55 @@
   /* ── CATEGORY GRID ── */
   .cat-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5px;
-    background: var(--border);
-    border: 1px solid var(--border);
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    background: transparent;
+    border: none;
   }
 
-  /* Scanner border animation — la firma */
   .cat-card {
     background: var(--card);
-    padding: 2rem;
-    position: relative;
+    border: 1px solid var(--border);
+    border-radius: 8px;
     overflow: hidden;
     cursor: pointer;
-    transition: background 0.25s;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     text-decoration: none;
     color: inherit;
-    display: block;
+    display: flex;
+    flex-direction: column;
   }
 
-  .cat-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: -100%;
-    width: 100%; height: 2px;
-    background: linear-gradient(to right, transparent, var(--accent), transparent);
-    transition: left 0s;
+  .cat-card-img-wrapper {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    position: relative;
+    background: var(--surface);
   }
 
-  .cat-card:hover { background: #1E1E2E; }
-
-  .cat-card:hover::before {
-    left: 100%;
-    transition: left 0.6s ease-in-out;
+  .cat-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
   }
 
-  .cat-icon {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    display: block;
+  .cat-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 107, 26, 0.1);
+  }
+
+  .cat-card:hover .cat-card-img {
+    transform: scale(1.05);
+  }
+
+  .cat-card-body {
+    padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
   }
 
   .cat-title {
@@ -305,6 +315,7 @@
     color: var(--muted);
     line-height: 1.6;
     margin-bottom: 1.25rem;
+    flex-grow: 1;
   }
 
   .cat-tags {
@@ -342,6 +353,7 @@
     letter-spacing: 0.1em;
     opacity: 0;
     transition: opacity 0.2s;
+    align-self: flex-start;
   }
 
   .cat-card:hover .cat-arrow { opacity: 1; }
@@ -393,9 +405,18 @@
   .media-card {
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 2px;
+    border-radius: 6px;
     overflow: hidden;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+  }
+
+  .media-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent2);
+    box-shadow: 0 8px 24px rgba(30,144,255,0.15);
   }
 
   .media-card.featured { grid-row: span 2; }
@@ -403,14 +424,46 @@
   .media-thumb {
     width: 100%;
     aspect-ratio: 16/9;
-    background: linear-gradient(135deg, var(--surface), #0D1A2E);
+    position: relative;
+    overflow: hidden;
+    background: var(--surface);
+  }
+
+  .media-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .media-card:hover .media-thumb img {
+    transform: scale(1.05);
+  }
+
+  .media-thumb::after {
+    content: '▶';
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 3rem;
+    font-size: 2.5rem;
+    color: var(--text);
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-family: 'Orbitron', monospace;
   }
 
-  .media-card.featured .media-thumb { aspect-ratio: unset; min-height: 320px; }
+  .media-card.featured .media-thumb::after {
+    font-size: 3.5rem;
+  }
+
+  .media-card:hover .media-thumb::after {
+    opacity: 1;
+  }
+
+  .media-card.featured .media-thumb { aspect-ratio: unset; min-height: 320px; height: 100%; }
 
   .media-info { padding: 1rem; }
 
@@ -606,6 +659,21 @@
     padding: 5rem 2rem 4rem;
   }
 
+  .detail-banner-wrapper {
+    width: 100%;
+    height: 280px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border);
+  }
+
+  .detail-banner {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
   .detail-back {
     display: inline-flex;
     align-items: center;
@@ -738,13 +806,12 @@
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">⚡ RobotLab Misiones</div>
+  <div class="nav-logo">⚡ Robots Red Maker</div>
   <ul class="nav-links">
     <li><a href="#categorias">Categorías</a></li>
     <li><a href="#biblioteca">Recursos</a></li>
     <li><a href="#multimedia">Multimedia</a></li>
     <li><a href="#comunidad">Comunidad</a></li>
-    <li><a href="#contacto">Contacto</a></li>
   </ul>
 </nav>
 
@@ -779,8 +846,8 @@
   </svg>
 
   <div class="hero-eyebrow">Red Maker Misiones</div>
-  <h1>Robot<span class="glow">Lab</span><br>Misiones</h1>
-  <p class="hero-sub">Diseño, desarrollo e innovación en robótica educativa y competitiva. Proyectos abiertos para construir, aprender y competir.</p>
+  <h1>Robots<br><span class="glow">Red Maker</span></h1>
+  <p class="hero-sub">un espacio Open Source para que des el primer paso en los robots de competencia, de la mano de tu red maker</p>
 
   <div class="hero-actions">
     <a href="#categorias" class="btn btn-primary">Explorar categorías</a>
@@ -789,7 +856,6 @@
 
   <div class="hero-robots">
     <div class="robot-stat"><span class="num">10</span><span class="label">Categorías</span></div>
-    <div class="robot-stat"><span class="num">23</span><span class="label">Nodos</span></div>
     <div class="robot-stat"><span class="num">75+</span><span class="label">Sedes</span></div>
     <div class="robot-stat"><span class="num">3</span><span class="label">Fechas Copa 2026</span></div>
   </div>
@@ -809,140 +875,180 @@
 
     <!-- Fútbol Robótico -->
     <a class="cat-card" onclick="openDetail('futbol')">
-      <span class="cat-icon">⚽</span>
-      <div class="cat-title">Fútbol Robótico</div>
-      <p class="cat-desc">Dos equipos de dos robots radiocontrolados compiten para anotar goles dentro del tiempo reglamentario.</p>
-      <div class="cat-tags">
-        <span class="tag tag-sub">Amateur ≤16</span>
-        <span class="tag tag-sub">Pro</span>
-        <span class="tag tag-content">RC</span>
-        <span class="tag tag-content">Chasis 3D</span>
+      <div class="cat-card-img-wrapper">
+        <img class="cat-card-img" src="https://images.unsplash.com/photo-1531746790731-6c087fecd77e?q=80&w=600&auto=format&fit=crop" alt="Fútbol Robótico">
       </div>
-      <div class="cat-arrow">EXPLORAR →</div>
+      <div class="cat-card-body">
+        <div class="cat-title">Fútbol Robótico</div>
+        <p class="cat-desc">Dos equipos de dos robots radiocontrolados compiten para anotar goles dentro del tiempo reglamentario.</p>
+        <div class="cat-tags">
+          <span class="tag tag-sub">Amateur ≤16</span>
+          <span class="tag tag-sub">Pro</span>
+          <span class="tag tag-content">RC</span>
+          <span class="tag tag-content">Chasis 3D</span>
+        </div>
+        <div class="cat-arrow">EXPLORAR →</div>
+      </div>
     </a>
 
     <!-- Laberinto -->
     <a class="cat-card" onclick="openDetail('laberinto')">
-      <span class="cat-icon">🧩</span>
-      <div class="cat-title">Laberinto</div>
-      <p class="cat-desc">Robots autónomos encuentran la salida de un laberinto en el menor tiempo posible.</p>
-      <div class="cat-tags">
-        <span class="tag tag-sub">Amateur</span>
-        <span class="tag tag-sub">Pro</span>
-        <span class="tag tag-content">Autónomo</span>
-        <span class="tag tag-content">Arduino</span>
+      <div class="cat-card-img-wrapper">
+        <img class="cat-card-img" src="https://images.unsplash.com/photo-1563770660941-20978e870e26?q=80&w=600&auto=format&fit=crop" alt="Laberinto">
       </div>
-      <div class="cat-arrow">EXPLORAR →</div>
+      <div class="cat-card-body">
+        <div class="cat-title">Laberinto</div>
+        <p class="cat-desc">Robots autónomos encuentran la salida de un laberinto en el menor tiempo posible.</p>
+        <div class="cat-tags">
+          <span class="tag tag-sub">Amateur</span>
+          <span class="tag tag-sub">Pro</span>
+          <span class="tag tag-content">Autónomo</span>
+          <span class="tag tag-content">Arduino</span>
+        </div>
+        <div class="cat-arrow">EXPLORAR →</div>
+      </div>
     </a>
 
     <!-- Carreras -->
     <a class="cat-card" onclick="openDetail('carreras')">
-      <span class="cat-icon">🏎️</span>
-      <div class="cat-title">Carreras / Velocista</div>
-      <p class="cat-desc">Competencia de velocidad en circuitos predefinidos. Optimización de peso, tracción y estabilidad.</p>
-      <div class="cat-tags">
-        <span class="tag tag-sub">Amateur</span>
-        <span class="tag tag-sub">Pro</span>
-        <span class="tag tag-content">Velocidad</span>
-        <span class="tag tag-content">Electrónica</span>
+      <div class="cat-card-img-wrapper">
+        <img class="cat-card-img" src="https://images.unsplash.com/photo-1518314916301-724f0c8ad691?q=80&w=600&auto=format&fit=crop" alt="Carreras / Velocista">
       </div>
-      <div class="cat-arrow">EXPLORAR →</div>
+      <div class="cat-card-body">
+        <div class="cat-title">Carreras / Velocista</div>
+        <p class="cat-desc">Competencia de velocidad en circuitos predefinidos. Optimización de peso, tracción y estabilidad.</p>
+        <div class="cat-tags">
+          <span class="tag tag-sub">Amateur</span>
+          <span class="tag tag-sub">Pro</span>
+          <span class="tag tag-content">Velocidad</span>
+          <span class="tag tag-content">Electrónica</span>
+        </div>
+        <div class="cat-arrow">EXPLORAR →</div>
+      </div>
     </a>
 
     <!-- Sumo -->
     <a class="cat-card" onclick="openDetail('sumo')">
-      <span class="cat-icon">🥋</span>
-      <div class="cat-title">Sumo Autónomo</div>
-      <p class="cat-desc">Combate autónomo entre robots de hasta 20×20 cm y 3 kg. Estrategia de ataque y defensa.</p>
-      <div class="cat-tags">
-        <span class="tag tag-sub">Amateur</span>
-        <span class="tag tag-sub">Pro</span>
-        <span class="tag tag-content">Autónomo</span>
-        <span class="tag tag-content">Sensores</span>
+      <div class="cat-card-img-wrapper">
+        <img class="cat-card-img" src="https://images.unsplash.com/photo-1581092334651-ddf26d9a1930?q=80&w=600&auto=format&fit=crop" alt="Sumo Autónomo">
       </div>
-      <div class="cat-arrow">EXPLORAR →</div>
+      <div class="cat-card-body">
+        <div class="cat-title">Sumo Autónomo</div>
+        <p class="cat-desc">Combate autónomo entre robots de hasta 20×20 cm y 3 kg. Estrategia de ataque y defensa.</p>
+        <div class="cat-tags">
+          <span class="tag tag-sub">Amateur</span>
+          <span class="tag tag-sub">Pro</span>
+          <span class="tag tag-content">Autónomo</span>
+          <span class="tag tag-content">Sensores</span>
+        </div>
+        <div class="cat-arrow">EXPLORAR →</div>
+      </div>
     </a>
 
     <!-- Sumo RC -->
     <a class="cat-card" onclick="openDetail('sumorc')">
-      <span class="cat-icon">🎮</span>
-      <div class="cat-title">Sumo RC</div>
-      <p class="cat-desc">Versión radiocontrolada del Sumo. Sistemas RC, diseño mecánico y configuración de controles.</p>
-      <div class="cat-tags">
-        <span class="tag tag-sub">Amateur</span>
-        <span class="tag tag-sub">Pro</span>
-        <span class="tag tag-content">RC</span>
-        <span class="tag tag-content">Mecánica</span>
+      <div class="cat-card-img-wrapper">
+        <img class="cat-card-img" src="https://images.unsplash.com/photo-1563206767-5b18f218e8de?q=80&w=600&auto=format&fit=crop" alt="Sumo RC">
       </div>
-      <div class="cat-arrow">EXPLORAR →</div>
+      <div class="cat-card-body">
+        <div class="cat-title">Sumo RC</div>
+        <p class="cat-desc">Versión radiocontrolada del Sumo. Sistemas RC, diseño mecánico y configuración de controles.</p>
+        <div class="cat-tags">
+          <span class="tag tag-sub">Amateur</span>
+          <span class="tag tag-sub">Pro</span>
+          <span class="tag tag-content">RC</span>
+          <span class="tag tag-content">Mecánica</span>
+        </div>
+        <div class="cat-arrow">EXPLORAR →</div>
+      </div>
     </a>
 
     <!-- Mini Sumo -->
     <a class="cat-card" onclick="openDetail('minisumo')">
-      <span class="cat-icon">🤖</span>
-      <div class="cat-title">Mini Sumo Autónomo</div>
-      <p class="cat-desc">Combate autónomo entre robots de hasta 10×10 cm y 500 g. Formato educativo y competitivo.</p>
-      <div class="cat-tags">
-        <span class="tag tag-sub">Educativo</span>
-        <span class="tag tag-sub">Pro</span>
-        <span class="tag tag-content">IR</span>
-        <span class="tag tag-content">Borde</span>
+      <div class="cat-card-img-wrapper">
+        <img class="cat-card-img" src="https://images.unsplash.com/photo-1546776310-eef45dd6d63c?q=80&w=600&auto=format&fit=crop" alt="Mini Sumo Autónomo">
       </div>
-      <div class="cat-arrow">EXPLORAR →</div>
+      <div class="cat-card-body">
+        <div class="cat-title">Mini Sumo Autónomo</div>
+        <p class="cat-desc">Combate autónomo entre robots de hasta 10×10 cm y 500 g. Formato educativo y competitivo.</p>
+        <div class="cat-tags">
+          <span class="tag tag-sub">Educativo</span>
+          <span class="tag tag-sub">Pro</span>
+          <span class="tag tag-content">IR</span>
+          <span class="tag tag-content">Borde</span>
+        </div>
+        <div class="cat-arrow">EXPLORAR →</div>
+      </div>
     </a>
 
     <!-- Mini Sumo RC -->
     <a class="cat-card" onclick="openDetail('minisumorc')">
-      <span class="cat-icon">🎯</span>
-      <div class="cat-title">Mini Sumo RC</div>
-      <p class="cat-desc">Versión radiocontrolada del Mini Sumo. Chasis compactos, Bluetooth y diseños imprimibles.</p>
-      <div class="cat-tags">
-        <span class="tag tag-sub">Amateur</span>
-        <span class="tag tag-sub">Pro</span>
-        <span class="tag tag-content">Bluetooth</span>
-        <span class="tag tag-content">3D</span>
+      <div class="cat-card-img-wrapper">
+        <img class="cat-card-img" src="https://images.unsplash.com/photo-1504639725590-34d0984388bd?q=80&w=600&auto=format&fit=crop" alt="Mini Sumo RC">
       </div>
-      <div class="cat-arrow">EXPLORAR →</div>
+      <div class="cat-card-body">
+        <div class="cat-title">Mini Sumo RC</div>
+        <p class="cat-desc">Versión radiocontrolada del Mini Sumo. Chasis compactos, Bluetooth y diseños imprimibles.</p>
+        <div class="cat-tags">
+          <span class="tag tag-sub">Amateur</span>
+          <span class="tag tag-sub">Pro</span>
+          <span class="tag tag-content">Bluetooth</span>
+          <span class="tag tag-content">3D</span>
+        </div>
+        <div class="cat-arrow">EXPLORAR →</div>
+      </div>
     </a>
 
     <!-- Dragster -->
     <a class="cat-card" onclick="openDetail('dragster')">
-      <span class="cat-icon">🚀</span>
-      <div class="cat-title">Dragster</div>
-      <p class="cat-desc">Robots autónomos para máxima velocidad en línea recta. Aerodinámica, motores de alto rendimiento.</p>
-      <div class="cat-tags">
-        <span class="tag tag-sub">Nuevo 2026</span>
-        <span class="tag tag-content">Aerodinámica</span>
-        <span class="tag tag-content">Motores</span>
+      <div class="cat-card-img-wrapper">
+        <img class="cat-card-img" src="https://images.unsplash.com/photo-1534224039826-c7a0dea0e66a?q=80&w=600&auto=format&fit=crop" alt="Dragster">
       </div>
-      <div class="cat-arrow">EXPLORAR →</div>
+      <div class="cat-card-body">
+        <div class="cat-title">Dragster</div>
+        <p class="cat-desc">Robots autónomos para máxima velocidad en línea recta. Aerodinámica, motores de alto rendimiento.</p>
+        <div class="cat-tags">
+          <span class="tag tag-sub">Nuevo 2026</span>
+          <span class="tag tag-content">Aerodinámica</span>
+          <span class="tag tag-content">Motores</span>
+        </div>
+        <div class="cat-arrow">EXPLORAR →</div>
+      </div>
     </a>
 
     <!-- Puck Collector -->
     <a class="cat-card" onclick="openDetail('puck')">
-      <span class="cat-icon">🏒</span>
-      <div class="cat-title">Puck Collector</div>
-      <p class="cat-desc">Robots autónomos que recolectan y transportan pucks hacia su zona de puntuación.</p>
-      <div class="cat-tags">
-        <span class="tag tag-sub">Nuevo 2026</span>
-        <span class="tag tag-content">Color</span>
-        <span class="tag tag-content">Autónomo</span>
+      <div class="cat-card-img-wrapper">
+        <img class="cat-card-img" src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=600&auto=format&fit=crop" alt="Puck Collector">
       </div>
-      <div class="cat-arrow">EXPLORAR →</div>
+      <div class="cat-card-body">
+        <div class="cat-title">Puck Collector</div>
+        <p class="cat-desc">Robots autónomos que recolectan y transportan pucks hacia su zona de puntuación.</p>
+        <div class="cat-tags">
+          <span class="tag tag-sub">Nuevo 2026</span>
+          <span class="tag tag-content">Color</span>
+          <span class="tag tag-content">Autónomo</span>
+        </div>
+        <div class="cat-arrow">EXPLORAR →</div>
+      </div>
     </a>
 
     <!-- Innovación -->
     <a class="cat-card" onclick="openDetail('innovacion')">
-      <span class="cat-icon">💡</span>
-      <div class="cat-title">Innovación</div>
-      <p class="cat-desc">Proyectos tecnológicos innovadores: IoT, IA, impresión 3D, automatización, domótica y STEM.</p>
-      <div class="cat-tags">
-        <span class="tag tag-sub">Abierto</span>
-        <span class="tag tag-content">IA</span>
-        <span class="tag tag-content">IoT</span>
-        <span class="tag tag-content">3D</span>
+      <div class="cat-card-img-wrapper">
+        <img class="cat-card-img" src="https://images.unsplash.com/photo-1507668077129-56e32842fceb?q=80&w=600&auto=format&fit=crop" alt="Innovación">
       </div>
-      <div class="cat-arrow">EXPLORAR →</div>
+      <div class="cat-card-body">
+        <div class="cat-title">Innovación</div>
+        <p class="cat-desc">Proyectos tecnológicos innovadores: IoT, IA, impresión 3D, automatización, domótica y STEM.</p>
+        <div class="cat-tags">
+          <span class="tag tag-sub">Abierto</span>
+          <span class="tag tag-content">IA</span>
+          <span class="tag tag-content">IoT</span>
+          <span class="tag tag-content">3D</span>
+        </div>
+        <div class="cat-arrow">EXPLORAR →</div>
+      </div>
     </a>
 
   </div>
@@ -1004,35 +1110,45 @@
   </div>
   <div class="media-grid reveal">
     <div class="media-card featured">
-      <div class="media-thumb">🤖</div>
+      <div class="media-thumb">
+        <img src="https://images.unsplash.com/photo-1561557944-6e7860d1a7eb?q=80&w=800&auto=format&fit=crop" alt="Final Sumo Autónomo">
+      </div>
       <div class="media-info">
         <div class="media-type"><span class="pulse-dot"></span>Competencia · Copa Robótica 2026</div>
         <div class="media-title">Final Sumo Autónomo — Parque de las Fiestas, Posadas</div>
       </div>
     </div>
     <div class="media-card">
-      <div class="media-thumb" style="font-size:2rem;">🏎️</div>
+      <div class="media-thumb">
+        <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=400&auto=format&fit=crop" alt="Construye tu primer velocista">
+      </div>
       <div class="media-info">
         <div class="media-type">Tutorial</div>
         <div class="media-title">Construye tu primer velocista</div>
       </div>
     </div>
     <div class="media-card">
-      <div class="media-thumb" style="font-size:2rem;">⚽</div>
+      <div class="media-thumb">
+        <img src="https://images.unsplash.com/photo-1531746790731-6c087fecd77e?q=80&w=400&auto=format&fit=crop" alt="Fútbol robótico">
+      </div>
       <div class="media-info">
         <div class="media-type">Demo</div>
         <div class="media-title">Fútbol robótico — estrategias RC</div>
       </div>
     </div>
     <div class="media-card">
-      <div class="media-thumb" style="font-size:2rem;">💡</div>
+      <div class="media-thumb">
+        <img src="https://images.unsplash.com/photo-1601134467661-3d775b999c8b?q=80&w=400&auto=format&fit=crop" alt="Sensores y encoders">
+      </div>
       <div class="media-info">
         <div class="media-type">Clase Twitch</div>
         <div class="media-title">Sensores, encoders y protocolos inalámbricos</div>
       </div>
     </div>
     <div class="media-card">
-      <div class="media-thumb" style="font-size:2rem;">🧩</div>
+      <div class="media-thumb">
+        <img src="https://images.unsplash.com/photo-1563770660941-20978e870e26?q=80&w=400&auto=format&fit=crop" alt="Algoritmos de laberintos">
+      </div>
       <div class="media-info">
         <div class="media-type">Tutorial</div>
         <div class="media-title">Algoritmos de resolución de laberintos</div>
@@ -1077,7 +1193,7 @@
 </section>
 
 <!-- CONTACTO -->
-<section id="contacto">
+<section id="contacto" style="display: none;">
   <div class="section-header reveal">
     <div class="section-label">Contacto</div>
     <div>
@@ -1132,7 +1248,7 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">⚡ RobotLab Misiones</div>
+  <div class="footer-logo">⚡ Robots Red Maker</div>
   <div class="footer-sub">Red Maker Misiones · Cámara de Representantes de Misiones</div>
   <div class="footer-links">
     <a href="#inicio">Inicio</a>
@@ -1140,9 +1256,8 @@
     <a href="#biblioteca">Biblioteca</a>
     <a href="#multimedia">Multimedia</a>
     <a href="#comunidad">Comunidad</a>
-    <a href="#contacto">Contacto</a>
   </div>
-  <div class="footer-copy">© 2026 RobotLab Misiones — Todos los diseños bajo licencia abierta CC BY-SA 4.0</div>
+  <div class="footer-copy">© 2026 Robots Red Maker — Todos los diseños bajo licencia abierta CC BY-SA 4.0</div>
 </footer>
 
 <!-- DETAIL OVERLAY -->
@@ -1150,9 +1265,14 @@
   <div class="detail-inner">
     <button class="detail-back" onclick="closeDetail()">← Volver a categorías</button>
     <div class="detail-header">
-      <span class="detail-icon" id="d-icon"></span>
-      <div class="detail-title" id="d-title"></div>
-      <p class="detail-desc" id="d-desc"></p>
+      <div class="detail-banner-wrapper">
+        <img id="d-banner" class="detail-banner" src="" alt="">
+      </div>
+      <div style="display: flex; align-items: center; gap: 1rem; margin-top: 1.5rem;">
+        <span class="detail-icon" id="d-icon" style="margin-bottom: 0;"></span>
+        <div class="detail-title" id="d-title"></div>
+      </div>
+      <p class="detail-desc" id="d-desc" style="margin-top: 1.5rem;"></p>
       <div class="cat-tags" id="d-tags"></div>
     </div>
     <div class="detail-sections" id="d-sections"></div>
@@ -1166,12 +1286,13 @@ const cats = {
   futbol: {
     icon: '⚽', title: 'Fútbol Robótico',
     folder: 'robots/futbol',
+    image: 'https://images.unsplash.com/photo-1531746790731-6c087fecd77e?q=80&w=800&auto=format&fit=crop',
     desc: 'Dos equipos de dos robots radiocontrolados compiten para anotar la mayor cantidad de goles dentro del tiempo reglamentario.',
     tags: ['Amateur ≤16', 'Pro', 'RC', 'Teleoperated'],
     subs: ['Amateur (hasta 16 años)', 'Pro'],
     content: ['Diseños de robots completos', 'Chasis 3D imprimibles', 'Sistemas de tracción diferencial', 'Integración receptor RC', 'Estrategias de juego y posición', 'Archivos STL descargables'],
     downloads: [
-      { name: '⬇ Chasis Fútbol v2.stl', file: 'README.md' }, // Puedes cambiar 'README.md' por el nombre del archivo real cuando lo subas
+      { name: '⬇ Chasis Fútbol v2.stl', file: 'README.md' },
       { name: '⬇ Guía de construcción PDF', file: 'README.md' },
       { name: '⬇ Reglamento Copa 2026', file: 'README.md' },
       { name: '⬇ Código receptor RC', file: 'README.md' }
@@ -1180,6 +1301,7 @@ const cats = {
   laberinto: {
     icon: '🧩', title: 'Laberinto',
     folder: 'robots/laberinto',
+    image: 'https://images.unsplash.com/photo-1563770660941-20978e870e26?q=80&w=800&auto=format&fit=crop',
     desc: 'Robots autónomos capaces de encontrar la salida de un laberinto en el menor tiempo posible mediante sensores y algoritmos de navegación.',
     tags: ['Amateur', 'Pro', 'Autónomo'],
     subs: ['Amateur', 'Pro'],
@@ -1194,6 +1316,7 @@ const cats = {
   carreras: {
     icon: '🏎️', title: 'Carreras / Velocista',
     folder: 'robots/carreras',
+    image: 'https://images.unsplash.com/photo-1518314916301-724f0c8ad691?q=80&w=800&auto=format&fit=crop',
     desc: 'Competencia de velocidad en circuitos predefinidos. El objetivo es recorrer el trayecto en el menor tiempo posible con robots autónomos seguidores de línea.',
     tags: ['Amateur', 'Pro', 'Velocidad'],
     subs: ['Amateur', 'Pro'],
@@ -1208,6 +1331,7 @@ const cats = {
   sumo: {
     icon: '🥋', title: 'Sumo Autónomo',
     folder: 'robots/sumo_autonomo',
+    image: 'https://images.unsplash.com/photo-1581092334651-ddf26d9a1930?q=80&w=800&auto=format&fit=crop',
     desc: 'Combate autónomo entre robots de hasta 20×20 cm y 3 kg. Detección del oponente y del borde del dohyō sin intervención humana.',
     tags: ['Amateur', 'Pro', 'Autónomo', '3kg'],
     subs: ['Amateur', 'Pro'],
@@ -1222,6 +1346,7 @@ const cats = {
   sumorc: {
     icon: '🎮', title: 'Sumo RC',
     folder: 'robots/sumo_rc',
+    image: 'https://images.unsplash.com/photo-1563206767-5b18f218e8de?q=80&w=800&auto=format&fit=crop',
     desc: 'Versión radiocontrolada del Sumo clásico. El piloto controla el robot en tiempo real con un sistema RC convencional.',
     tags: ['Amateur', 'Pro', 'RC'],
     subs: ['Amateur', 'Pro'],
@@ -1236,6 +1361,7 @@ const cats = {
   minisumo: {
     icon: '🤖', title: 'Mini Sumo Autónomo',
     folder: 'robots/minisumo_autonomo',
+    image: 'https://images.unsplash.com/photo-1546776310-eef45dd6d63c?q=80&w=800&auto=format&fit=crop',
     desc: 'Combate autónomo entre robots de hasta 10×10 cm y 500 g. Disponible en formato educativo y competitivo.',
     tags: ['Educativo', 'Pro', '500g', 'Arduino'],
     subs: ['MiniSumo Educativo', 'MiniSumo Pro'],
@@ -1250,6 +1376,7 @@ const cats = {
   minisumorc: {
     icon: '🎯', title: 'Mini Sumo RC',
     folder: 'robots/minisumo_rc',
+    image: 'https://images.unsplash.com/photo-1504639725590-34d0984388bd?q=80&w=800&auto=format&fit=crop',
     desc: 'Versión radiocontrolada del Mini Sumo. Chasis ultra-compactos controlados por Bluetooth o radio 2.4GHz.',
     tags: ['Amateur', 'Pro', 'Bluetooth', '3D'],
     subs: ['Amateur', 'Pro'],
@@ -1264,6 +1391,7 @@ const cats = {
   dragster: {
     icon: '🚀', title: 'Dragster',
     folder: 'robots/dragster',
+    image: 'https://images.unsplash.com/photo-1534224039826-c7a0dea0e66a?q=80&w=800&auto=format&fit=crop',
     desc: 'Robots autónomos diseñados para alcanzar la máxima velocidad en línea recta. Categoría nueva en Copa Robótica Misiones 2026.',
     tags: ['Nuevo 2026', 'Autónomo', 'Alta velocidad'],
     subs: ['Única categoría'],
@@ -1278,6 +1406,7 @@ const cats = {
   puck: {
     icon: '🏒', title: 'Puck Collector',
     folder: 'robots/puck_collector',
+    image: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=800&auto=format&fit=crop',
     desc: 'Robots autónomos que detectan, recolectan y transportan pucks de colores hacia su zona de puntuación. Categoría nueva 2026.',
     tags: ['Nuevo 2026', 'Autónomo', 'Color'],
     subs: ['Única categoría'],
@@ -1292,6 +1421,7 @@ const cats = {
   innovacion: {
     icon: '💡', title: 'Innovación',
     folder: 'robots/innovacion',
+    image: 'https://images.unsplash.com/photo-1507668077129-56e32842fceb?q=80&w=800&auto=format&fit=crop',
     desc: 'Espacio abierto para proyectos tecnológicos que van más allá de la competencia: IoT, IA, automatización, domótica y educación STEM.',
     tags: ['Abierto', 'IA', 'IoT', '3D', 'STEM'],
     subs: ['Proyectos IoT', 'Proyectos IA', 'Automatización y Domótica'],
@@ -1308,6 +1438,8 @@ const cats = {
 function openDetail(id) {
   const c = cats[id];
   if (!c) return;
+  document.getElementById('d-banner').src = c.image;
+  document.getElementById('d-banner').alt = c.title;
   document.getElementById('d-icon').textContent = c.icon;
   document.getElementById('d-title').textContent = c.title;
   document.getElementById('d-desc').textContent = c.desc;
