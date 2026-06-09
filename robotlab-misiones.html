@@ -250,47 +250,59 @@
   .cat-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 1.5rem;
+    gap: 2.5rem 1.5rem;
     background: transparent;
     border: none;
+    padding-top: 1rem;
   }
 
   .cat-card {
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
+    border-radius: 12px;
+    overflow: visible;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     text-decoration: none;
     color: inherit;
     display: flex;
     flex-direction: column;
+    position: relative;
+    padding-top: 15px;
   }
 
   .cat-card-img-wrapper {
-    width: 100%;
-    height: 180px;
-    overflow: hidden;
+    width: 90%;
+    height: 160px;
+    margin: 0 auto;
+    overflow: visible;
     position: relative;
-    background: var(--surface);
+    border-radius: 8px;
+    background: radial-gradient(circle, rgba(255, 107, 26, 0.12) 0%, rgba(30, 144, 255, 0.04) 70%, transparent 100%);
+    border: 1px dashed rgba(255, 107, 26, 0.15);
   }
 
   .cat-card-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.95);
+    width: 85%;
+    height: 125%;
+    object-fit: contain;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), filter 0.4s;
+    filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.6));
   }
 
   .cat-card:hover {
     transform: translateY(-5px);
     border-color: var(--accent);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 107, 26, 0.1);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4), 0 0 15px rgba(255, 107, 26, 0.15);
   }
 
   .cat-card:hover .cat-card-img {
-    transform: scale(1.05);
+    transform: translateX(-50%) translateY(-20px) scale(1.1);
+    filter: drop-shadow(0 15px 20px rgba(255, 107, 26, 0.4));
   }
 
   .cat-card-body {
@@ -666,12 +678,17 @@
     overflow: hidden;
     margin-bottom: 2rem;
     border: 1px solid var(--border);
+    background: radial-gradient(circle, rgba(30, 144, 255, 0.15) 0%, rgba(10, 10, 15, 1) 80%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .detail-banner {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    width: auto;
+    height: 90%;
+    object-fit: contain;
+    filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.7));
   }
 
   .detail-back {
@@ -876,7 +893,7 @@
     <!-- Fútbol Robótico -->
     <a class="cat-card" onclick="openDetail('futbol')">
       <div class="cat-card-img-wrapper">
-        <img class="cat-card-img" src="https://images.unsplash.com/photo-1531746790731-6c087fecd77e?q=80&w=600&auto=format&fit=crop" alt="Fútbol Robótico">
+        <img class="cat-card-img" src="assets/images/futbol.png" alt="Fútbol Robótico">
       </div>
       <div class="cat-card-body">
         <div class="cat-title">Fútbol Robótico</div>
@@ -894,7 +911,7 @@
     <!-- Laberinto -->
     <a class="cat-card" onclick="openDetail('laberinto')">
       <div class="cat-card-img-wrapper">
-        <img class="cat-card-img" src="https://images.unsplash.com/photo-1563770660941-20978e870e26?q=80&w=600&auto=format&fit=crop" alt="Laberinto">
+        <img class="cat-card-img" src="assets/images/laberinto.png" alt="Laberinto">
       </div>
       <div class="cat-card-body">
         <div class="cat-title">Laberinto</div>
@@ -912,7 +929,7 @@
     <!-- Carreras -->
     <a class="cat-card" onclick="openDetail('carreras')">
       <div class="cat-card-img-wrapper">
-        <img class="cat-card-img" src="https://images.unsplash.com/photo-1518314916301-724f0c8ad691?q=80&w=600&auto=format&fit=crop" alt="Carreras / Velocista">
+        <img class="cat-card-img" src="assets/images/velocista.png" alt="Carreras / Velocista">
       </div>
       <div class="cat-card-body">
         <div class="cat-title">Carreras / Velocista</div>
@@ -930,11 +947,11 @@
     <!-- Sumo -->
     <a class="cat-card" onclick="openDetail('sumo')">
       <div class="cat-card-img-wrapper">
-        <img class="cat-card-img" src="https://images.unsplash.com/photo-1581092334651-ddf26d9a1930?q=80&w=600&auto=format&fit=crop" alt="Sumo Autónomo">
+        <img class="cat-card-img" src="assets/images/sumo.png" alt="Sumo Autónomo">
       </div>
       <div class="cat-card-body">
         <div class="cat-title">Sumo Autónomo</div>
-        <p class="cat-desc">Combate autónomo entre robots de hasta 20×20 cm y 3 kg. Estrategia de ataque y defensa.</p>
+        <p class="cat-desc">Combate autónomo entre robots de hasta 20×20 cm y 3 kg. Detección del oponente y del borde del dohyō sin intervención humana.</p>
         <div class="cat-tags">
           <span class="tag tag-sub">Amateur</span>
           <span class="tag tag-sub">Pro</span>
@@ -948,7 +965,7 @@
     <!-- Sumo RC -->
     <a class="cat-card" onclick="openDetail('sumorc')">
       <div class="cat-card-img-wrapper">
-        <img class="cat-card-img" src="https://images.unsplash.com/photo-1563206767-5b18f218e8de?q=80&w=600&auto=format&fit=crop" alt="Sumo RC">
+        <img class="cat-card-img" src="assets/images/minisumopro.png" alt="Sumo RC">
       </div>
       <div class="cat-card-body">
         <div class="cat-title">Sumo RC</div>
@@ -966,7 +983,7 @@
     <!-- Mini Sumo -->
     <a class="cat-card" onclick="openDetail('minisumo')">
       <div class="cat-card-img-wrapper">
-        <img class="cat-card-img" src="https://images.unsplash.com/photo-1546776310-eef45dd6d63c?q=80&w=600&auto=format&fit=crop" alt="Mini Sumo Autónomo">
+        <img class="cat-card-img" src="assets/images/minisumo.png" alt="Mini Sumo Autónomo">
       </div>
       <div class="cat-card-body">
         <div class="cat-title">Mini Sumo Autónomo</div>
@@ -984,7 +1001,7 @@
     <!-- Mini Sumo RC -->
     <a class="cat-card" onclick="openDetail('minisumorc')">
       <div class="cat-card-img-wrapper">
-        <img class="cat-card-img" src="https://images.unsplash.com/photo-1504639725590-34d0984388bd?q=80&w=600&auto=format&fit=crop" alt="Mini Sumo RC">
+        <img class="cat-card-img" src="assets/images/minisumorc.png" alt="Mini Sumo RC">
       </div>
       <div class="cat-card-body">
         <div class="cat-title">Mini Sumo RC</div>
@@ -1286,7 +1303,7 @@ const cats = {
   futbol: {
     icon: '⚽', title: 'Fútbol Robótico',
     folder: 'robots/futbol',
-    image: 'https://images.unsplash.com/photo-1531746790731-6c087fecd77e?q=80&w=800&auto=format&fit=crop',
+    image: 'assets/images/futbol.png',
     desc: 'Dos equipos de dos robots radiocontrolados compiten para anotar la mayor cantidad de goles dentro del tiempo reglamentario.',
     tags: ['Amateur ≤16', 'Pro', 'RC', 'Teleoperated'],
     subs: ['Amateur (hasta 16 años)', 'Pro'],
@@ -1301,7 +1318,7 @@ const cats = {
   laberinto: {
     icon: '🧩', title: 'Laberinto',
     folder: 'robots/laberinto',
-    image: 'https://images.unsplash.com/photo-1563770660941-20978e870e26?q=80&w=800&auto=format&fit=crop',
+    image: 'assets/images/laberinto.png',
     desc: 'Robots autónomos capaces de encontrar la salida de un laberinto en el menor tiempo posible mediante sensores y algoritmos de navegación.',
     tags: ['Amateur', 'Pro', 'Autónomo'],
     subs: ['Amateur', 'Pro'],
@@ -1316,7 +1333,7 @@ const cats = {
   carreras: {
     icon: '🏎️', title: 'Carreras / Velocista',
     folder: 'robots/carreras',
-    image: 'https://images.unsplash.com/photo-1518314916301-724f0c8ad691?q=80&w=800&auto=format&fit=crop',
+    image: 'assets/images/velocista.png',
     desc: 'Competencia de velocidad en circuitos predefinidos. El objetivo es recorrer el trayecto en el menor tiempo posible con robots autónomos seguidores de línea.',
     tags: ['Amateur', 'Pro', 'Velocidad'],
     subs: ['Amateur', 'Pro'],
@@ -1331,7 +1348,7 @@ const cats = {
   sumo: {
     icon: '🥋', title: 'Sumo Autónomo',
     folder: 'robots/sumo_autonomo',
-    image: 'https://images.unsplash.com/photo-1581092334651-ddf26d9a1930?q=80&w=800&auto=format&fit=crop',
+    image: 'assets/images/sumo.png',
     desc: 'Combate autónomo entre robots de hasta 20×20 cm y 3 kg. Detección del oponente y del borde del dohyō sin intervención humana.',
     tags: ['Amateur', 'Pro', 'Autónomo', '3kg'],
     subs: ['Amateur', 'Pro'],
@@ -1346,7 +1363,7 @@ const cats = {
   sumorc: {
     icon: '🎮', title: 'Sumo RC',
     folder: 'robots/sumo_rc',
-    image: 'https://images.unsplash.com/photo-1563206767-5b18f218e8de?q=80&w=800&auto=format&fit=crop',
+    image: 'assets/images/minisumopro.png',
     desc: 'Versión radiocontrolada del Sumo clásico. El piloto controla el robot en tiempo real con un sistema RC convencional.',
     tags: ['Amateur', 'Pro', 'RC'],
     subs: ['Amateur', 'Pro'],
@@ -1361,7 +1378,7 @@ const cats = {
   minisumo: {
     icon: '🤖', title: 'Mini Sumo Autónomo',
     folder: 'robots/minisumo_autonomo',
-    image: 'https://images.unsplash.com/photo-1546776310-eef45dd6d63c?q=80&w=800&auto=format&fit=crop',
+    image: 'assets/images/minisumo.png',
     desc: 'Combate autónomo entre robots de hasta 10×10 cm y 500 g. Disponible en formato educativo y competitivo.',
     tags: ['Educativo', 'Pro', '500g', 'Arduino'],
     subs: ['MiniSumo Educativo', 'MiniSumo Pro'],
@@ -1376,7 +1393,7 @@ const cats = {
   minisumorc: {
     icon: '🎯', title: 'Mini Sumo RC',
     folder: 'robots/minisumo_rc',
-    image: 'https://images.unsplash.com/photo-1504639725590-34d0984388bd?q=80&w=800&auto=format&fit=crop',
+    image: 'assets/images/minisumorc.png',
     desc: 'Versión radiocontrolada del Mini Sumo. Chasis ultra-compactos controlados por Bluetooth o radio 2.4GHz.',
     tags: ['Amateur', 'Pro', 'Bluetooth', '3D'],
     subs: ['Amateur', 'Pro'],
